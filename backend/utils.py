@@ -28,6 +28,6 @@ async def send_otp_sms(mobile_number: str, otp: str):
             }
         )
         return response
-    except Exception as e:
-        raise Exception 
+    except Exception:
+        raise
     

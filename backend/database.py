@@ -6,3 +6,6 @@ async def clean_up_expired_otp(db_client):
         await db_client.table("otp_verifications").delete().lt("expires_at", datetime.now(timezone.utc).isoformat()).execute()
     except Exception as e:
         print("An error happened",e)
+        
+async def delete_existing_otp(payload, db_client):
+    await db_client.table("otp_verifications").delete().eq("mobile_number", payload.mobile_number).execute() #delete all all previous otps of the number before asking for another
