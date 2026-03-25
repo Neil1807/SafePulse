@@ -3,7 +3,8 @@ from contextlib import asynccontextmanager
 from pydantic import BaseModel, field_validator
 from supabase import acreate_client, AsyncClient
 from dotenv import load_dotenv
-from utils import generate_otp, clean_up_expired_otp
+from utils import generate_otp
+from database import clean_up_expired_otp, delete_existing_otp
 import os
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -76,7 +77,7 @@ async def register_user(payload: RegisterPayload, db_client: AsyncClient = Depen
         "otp_code": otp,
         "purpose":"registration",
         }
-        await db_client.table("otp_verifications").delete().eq("mobile_number", payload.mobile_number).execute() #delete all all previous otps of the number before asking for another
+        await delete_existing_otp(payload.mobile_number, db_client)
         db_response = await db_client.table("otp_verifications").insert(db_payload).execute()
         
     except Exception as e:
