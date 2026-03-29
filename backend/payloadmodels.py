@@ -43,3 +43,4 @@ class RequestOTPPayload(BaseModel):
         if v not in ("registration", "login"):
             raise ValueError("Invalid Purpose")
         return v
+    
