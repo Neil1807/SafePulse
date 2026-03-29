@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from supabase import acreate_client, AsyncClient
 from dotenv import load_dotenv
@@ -7,7 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger 
 
 #other file imports for separation of concerns
-from utils import generate_otp, send_otp_sms, number_in_db 
+from utils import generate_otp, send_otp_sms, number_in_db, create_session
 from database import clean_up_expired_otp, delete_existing_otp, add_user_to_database\
 ,insert_otp_entry,DuplicateMobileError
 from auth import checkOTP, OTPNotFoundError, ExpiredOTPError
@@ -15,6 +16,19 @@ from payloadmodels import AuthOTPPayload, RequestOTPPayload
 
 scheduler = AsyncIOScheduler()
 load_dotenv()
+
+async def handle_registration(mobile_number, db_client):
+    await add_user_to_database(mobile_number, db_client)
+    return JSONResponse(status_code = 201, content = {"detail": "User is registered"})
+
+async def handle_login(mobile_number: str, db_client):
+    session_id = await create_session(mobile_number, db_client)
+    return JSONResponse(status_code = 200,content = {"detail": "User is logged in", "session id": session_id})
+
+HANDLERS = {
+    "registration": handle_registration,
+    "login": handle_login
+    }
 
 #startup logic
 @asynccontextmanager
@@ -72,11 +86,8 @@ async def auth_otp(payload:AuthOTPPayload, db_client: AsyncClient = Depends(get_
         isvalid = await checkOTP(payload.mobile_number, payload.purpose,payload.otp,db_client)
         if isvalid:
             await delete_existing_otp(payload.mobile_number, db_client)
-            if payload.purpose == "registration":
-                await add_user_to_database(payload.mobile_number, db_client)
-            elif payload.purpose == "login":
-                raise HTTPException(200,detail="User is logged in")
-            return {"detail":"Correct OTP"}
+            handler = HANDLERS.get(payload.purpose)
+            return await handler(payload.mobile_number, db_client)
         else:
             raise HTTPException(401, detail="Incorrect OTP")
     except OTPNotFoundError as e:
@@ -89,6 +100,3 @@ async def auth_otp(payload:AuthOTPPayload, db_client: AsyncClient = Depends(get_
         raise HTTPException(status_code=409, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
-
-
-    

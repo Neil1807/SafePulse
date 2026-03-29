@@ -29,3 +29,14 @@ async def insert_otp_entry(mobile_number: str, otp:str, purpose:str, db_client):
         }
     db_response = await db_client.table("otp_verifications").insert(db_payload).execute()
     return db_response.data[0]["otp_code"]
+
+async def insert_session(user_id:str, token:str, db_client):
+    db_payload = {
+        "session_id": token,
+        "user_id":user_id
+    }
+    await db_client.table("sessions").insert(db_payload).execute()
+    
+async def get_user(mobile_number: str, db_client):
+    res = await db_client.table("users").select().eq("mobile_number", mobile_number).execute()
+    return res.data[0]["user_id"]
