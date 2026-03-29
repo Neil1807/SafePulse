@@ -2,16 +2,11 @@ from datetime import datetime, timezone
 
 class DuplicateMobileError(Exception):
     pass
-#scheduler to cleanup expired otp
-async def clean_up_expired_otp(db_client):
-    try:
-        await db_client.table("otp_verifications").delete().lt("expires_at", datetime.now(timezone.utc).isoformat()).execute()
-    except Exception as e:
-        print("An error happened",e)
-        
-async def delete_existing_otp(mobile_number, db_client):
-    await db_client.table("otp_verifications").delete().eq("mobile_number", mobile_number).execute() #delete all all previous otps of the number before asking for another
-    
+
+class SessionNotFoundError(Exception):
+    pass
+
+#CREATE   
 async def add_user_to_database(mobile_number, db_client):
     try: 
         db_payload = {
@@ -20,7 +15,19 @@ async def add_user_to_database(mobile_number, db_client):
         await db_client.table("users").insert(db_payload).execute()
     except Exception as e:
         raise DuplicateMobileError("Mobile number already in database")
-    
+ 
+#READ
+async def get_session(session_id: str, db_client):
+    res = await db_client.table("sessions").select().eq("session_id", session_id).execute()
+    if not res.data:
+        raise SessionNotFoundError("Session Not found")
+    return res.data[0]["user_id"]
+
+async def get_user(mobile_number: str, db_client):
+    res = await db_client.table("users").select().eq("mobile_number", mobile_number).execute()
+    return res.data[0]["user_id"]
+ 
+#UPDATE   
 async def insert_otp_entry(mobile_number: str, otp:str, purpose:str, db_client):
     db_payload = {
         "mobile_number":mobile_number,
@@ -36,7 +43,17 @@ async def insert_session(user_id:str, token:str, db_client):
         "user_id":user_id
     }
     await db_client.table("sessions").insert(db_payload).execute()
+
+#DELETE
+async def logout_user(user_id: str, db_client):
+    await db_client.table("sessions").delete().eq("user_id", user_id).execute()
     
-async def get_user(mobile_number: str, db_client):
-    res = await db_client.table("users").select().eq("mobile_number", mobile_number).execute()
-    return res.data[0]["user_id"]
+async def delete_existing_otp(mobile_number, db_client):
+    await db_client.table("otp_verifications").delete().eq("mobile_number", mobile_number).execute()
+    
+#scheduler to cleanup expired otp
+async def clean_up_expired_otp(db_client):
+    try:
+        await db_client.table("otp_verifications").delete().lt("expires_at", datetime.now(timezone.utc).isoformat()).execute()
+    except Exception as e:
+        print("An error happened",e)

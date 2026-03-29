@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi import FastAPI, Request, HTTPException, Header, Depends
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from supabase import acreate_client, AsyncClient
@@ -9,8 +9,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 #other file imports for separation of concerns
 from utils import generate_otp, send_otp_sms, number_in_db, create_session
-from database import clean_up_expired_otp, delete_existing_otp, add_user_to_database\
-,insert_otp_entry,DuplicateMobileError
+from database import DuplicateMobileError, SessionNotFoundError, clean_up_expired_otp, delete_existing_otp\
+,add_user_to_database,insert_otp_entry, get_session, logout_user, get_user
 from auth import checkOTP, OTPNotFoundError, ExpiredOTPError
 from payloadmodels import AuthOTPPayload, RequestOTPPayload
 
@@ -22,6 +22,8 @@ async def handle_registration(mobile_number, db_client):
     return JSONResponse(status_code = 201, content = {"detail": "User is registered"})
 
 async def handle_login(mobile_number: str, db_client):
+    current_user_id = await get_user(mobile_number, db_client)
+    await logout_user(current_user_id, db_client)
     session_id = await create_session(mobile_number, db_client)
     return JSONResponse(status_code = 200,content = {"detail": "User is logged in", "session id": session_id})
 
@@ -60,6 +62,14 @@ async def get_db_client(request: Request) -> AsyncClient:
     return request.app.state.db_client
 async def get_auth_client(request: Request) -> AsyncClient:
     return request.app.state.auth_client
+async def get_current_user(session_id = Header(), db_client = Depends(get_db_client)):
+    try:
+        current_user = await get_session(session_id, db_client)
+    except SessionNotFoundError: 
+        raise HTTPException(status_code = 401, detail="You've been logged out")
+    except Exception as e:
+        raise HTTPException(status_code= 500, detail=str(e))
+    return current_user
       
 @app.get("/")
 def root():
@@ -100,3 +110,8 @@ async def auth_otp(payload:AuthOTPPayload, db_client: AsyncClient = Depends(get_
         raise HTTPException(status_code=409, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
+    
+@app.delete("/api/v1/logout")
+async def logout(current_user = Depends(get_current_user), db_client = Depends(get_db_client)):
+    await logout_user(current_user, db_client)
+    return {"detail": "User logged out"}

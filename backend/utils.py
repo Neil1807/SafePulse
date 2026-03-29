@@ -43,5 +43,3 @@ async def create_session(mobile_number: str, db_client, length: int = 32):
     await insert_session(user_id, session_id, db_client)
     return session_id
     
-async def check_valid_otp():
-    pass
