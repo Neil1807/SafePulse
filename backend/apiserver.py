@@ -65,7 +65,6 @@ async def request_OTP(payload: RequestOTPPayload, db_client = Depends(get_db_cli
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
     return {"otp_code":db_response.data[0]["otp_code"]}
-    pass
 
 #TODO CREATE A CHECKOTP ENDPOINT
 @app.post("/api/v1/authOTP")
