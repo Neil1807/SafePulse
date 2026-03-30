@@ -2,34 +2,57 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { House, UserPlus, Users,Menu } from 'lucide-react-native';
+
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+  
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors.light.tabIconSelected,
+        tabBarInactiveTintColor: Colors.light.tabIconDefault,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          borderTopColor: '#969696',
+          borderTopWidth: 1,
+          elevation: 0,
+        },
+
       }}>
       <Tabs.Screen
-        name="index"
+        name="Home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <House size={24}  color={color} />,
         }}
       />
+
       <Tabs.Screen
-        name="explore"
+       name = "AddContacts"
+       options={{
+        title: 'Add Contact',
+        tabBarIcon: ({ color }) => <UserPlus color={color} size={24} />,
+       }}
+       />
+
+      <Tabs.Screen
+        name="ManageContacts"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Manage Contact',
+          tabBarIcon: ({ color }) => <Users size={24} color={color} />,
         }}
       />
+    
+      <Tabs.Screen
+       name = "Menu"
+       options={{
+        title: 'Menu',
+        tabBarIcon: ({ color }) => <Menu color={color} size={24} />,
+       }}
+       />
     </Tabs>
   );
 }
