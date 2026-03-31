@@ -7,7 +7,7 @@ import { Phone } from 'lucide-react-native';
 
 
 
-export default function LoginScreen ()
+export default function SignUpScreen ()
 {
 const router = useRouter();
 const [phoneNumber, setPhoneNumber] = useState('');
@@ -80,7 +80,7 @@ const handleAuthOTP = async () => {
                 <Text className="text-center text-white">Send OTP</Text>
             </TouchableOpacity>
 
-             <TouchableOpacity onPress={handleAuthOTP}
+             <TouchableOpacity onPress={()=> router.replace('/login')}
             className="bg-[#FFFFF] p-5 rounded-[25px] border border-[#737373]">
                 <Text className="text-center">Log in</Text>
             </TouchableOpacity>
