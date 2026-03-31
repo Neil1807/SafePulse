@@ -12,7 +12,11 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>
       <Stack initialRouteName='signup'
-             screenOptions={{animation: 'fade'}}>
+             screenOptions={{
+              animation: 'fade',
+              contentStyle: { backgroundColor: '#3723A9'}
+            }}
+             >
 
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="signup" options={{headerShown: false}}/>

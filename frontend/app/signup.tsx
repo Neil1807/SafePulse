@@ -54,7 +54,7 @@ const handleAuthOTP = async () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           >
 
-         <View className="flex-1"> 
+         <View className="flex-1 bg-[#3723A9]"> 
             <View className="flex-[6] bg-[#3723A9]"></View>
 
          <View className="rounded-[28px] flex-[4] bg-[#F5F5F5] p-10 -mt-16">
