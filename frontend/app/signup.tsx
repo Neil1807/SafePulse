@@ -12,7 +12,6 @@ export default function LoginScreen ()
 const router = useRouter();
 const [phoneNumber, setPhoneNumber] = useState('');
 const [otp, setOtp] = useState('');
-const [showPassword, setShowPassword] = useState(false);
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState('');
 const [result, setResult] = useState('');
