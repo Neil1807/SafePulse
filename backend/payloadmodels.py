@@ -7,13 +7,7 @@ class AuthOTPPayload(BaseModel):
     @field_validator("mobile_number")
     @classmethod
     def check_digits(cls, v):
-        v = v.strip()
-        MAX_DIGITS = 12
-        if v[:3] != "639":
-            raise ValueError("Mobile Number must be Philippine Based(639)")
-        if len(v) != MAX_DIGITS:
-            raise ValueError("Mobile number must be 11 digits")
-        return v
+        return validate_mobile_number(v)
     
     @field_validator("purpose")
     @classmethod
@@ -29,13 +23,7 @@ class RequestOTPPayload(BaseModel):
     @field_validator("mobile_number")
     @classmethod
     def check_digits(cls, v):
-        v = v.strip()
-        MAX_DIGITS = 12
-        if v[:3] != "639":
-            raise ValueError("Mobile Number must be Philippine Based(639)")
-        if len(v) != MAX_DIGITS:
-            raise ValueError("Mobile number must be 11 digits")
-        return v
+        return validate_mobile_number(v)
     
     @field_validator("purpose")
     @classmethod
@@ -44,3 +32,38 @@ class RequestOTPPayload(BaseModel):
             raise ValueError("Invalid Purpose")
         return v
     
+class LocationPayload(BaseModel):
+    latitude: float
+    longitude: float
+    
+    @field_validator("latitude")
+    @classmethod
+    def validate_latitude(cls, v):
+        if not(-90 <= v <= 90):
+            raise ValueError("Invalid latitude coordinates")
+        return v
+    
+    @field_validator("longitude")
+    @classmethod
+    def validate_longitude(cls, v):
+        if not(-180 <= v <= 180):
+            raise ValueError("Invalid longitude coordinates")
+        return v
+    
+class RelativesPayload(BaseModel):
+    relative_name: str
+    relative_number: str
+    
+    @field_validator("relative_number")
+    @classmethod
+    def check_digits(cls, v):
+        return validate_mobile_number(v)
+    
+def validate_mobile_number(mobile_number):
+    mobile_number = mobile_number.strip()
+    MAX_DIGITS = 12
+    if mobile_number[:3] != "639":
+        raise ValueError("Mobile Number must be Philippine Based(639)")
+    if len(mobile_number) != MAX_DIGITS:
+        raise ValueError("Mobile number must be 11 digits")
+    return mobile_number
