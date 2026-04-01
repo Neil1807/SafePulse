@@ -15,8 +15,6 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={DefaultTheme}>
-  
-
       <ImageBackground 
         source={require('../assets/images/background-image.jpg')}
         style={{ flex: 1 }}
