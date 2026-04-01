@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {View, Text, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image} from 'react-native';
 
 
 export default function Home ()
@@ -7,7 +7,10 @@ export default function Home ()
   return (
     <View className="flex-1"> 
             <View className="flex-[6] bg-[#3723A9]">
-
+            <Image 
+            source={require('../../assets/images/background-image.jpg')}
+            className="absolute w-full h-full opacity-20"
+            />
                 
             </View>
 
