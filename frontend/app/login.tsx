@@ -1,8 +1,8 @@
 import { useState } from "react";
-import {View, Text, TextInput, TouchableOpacity,Platform} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity,Platform, Image} from 'react-native';
 import { useRouter } from 'expo-router';
 import { KeyboardAvoidingView, KeyboardProvider } from "react-native-keyboard-controller";
-import { Phone } from 'lucide-react-native';
+
 
 
 
@@ -55,7 +55,12 @@ const handleAuthOTP = async () => {
           >
 
          <View className="flex-1 "> 
-            <View className="flex-[6] bg-[#3723A9]"></View>
+            <View className="flex-[6] bg-[#3723A9]">
+                <Image 
+                  source={require('../assets/images/background-image.jpg')}
+                  className="absolute w-full h-full opacity-20"
+                  />
+              </View>
 
          <View className="rounded-[28px] flex-[4] bg-[#F5F5F5] p-10 -mt-16">
             <Text className="text-2xl font-bold mb-6 ">Log in</Text>
@@ -80,7 +85,7 @@ const handleAuthOTP = async () => {
          
 
     
-            <TouchableOpacity onPress={handleRequestOTP}
+            <TouchableOpacity onPress={()=> router.replace('/(tabs)/home')}
             className="bg-[#FF6B2C] p-5 rounded-[25px] mb-4">
                 <Text className="text-center text-white">Send OTP</Text>
             </TouchableOpacity>
