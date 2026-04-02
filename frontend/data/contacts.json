@@ -1,0 +1,102 @@
+[
+  {
+    "relative_id": "1",
+    "relative_name": "Dad",
+    "mobile_number": "639171234567"
+  },
+  {
+    "relative_id": "2",
+    "relative_name": "Mom",
+    "mobile_number": "639281234568"
+  },
+  {
+    "relative_id": "3",
+    "relative_name": "Aunt",
+    "mobile_number": "639391234569"
+  },
+  {
+    "relative_id": "4",
+    "relative_name": "Uncle",
+    "mobile_number": "639451234570"
+  },
+  {
+    "relative_id": "5",
+    "relative_name": "Grandma",
+    "mobile_number": "639561234571"
+  },
+  {
+    "relative_id": "6",
+    "relative_name": "Grandpa",
+    "mobile_number": "639671234572"
+  },
+  {
+    "relative_id": "7",
+    "relative_name": "Sister",
+    "mobile_number": "639781234573"
+  },
+  {
+    "relative_id": "8",
+    "relative_name": "Brother",
+    "mobile_number": "639891234574"
+  },
+  {
+    "relative_id": "9",
+    "relative_name": "Cousin Karl",
+    "mobile_number": "639912345675"
+  },
+  {
+    "relative_id": "10",
+    "relative_name": "Cousin Ana",
+    "mobile_number": "639923456786"
+  },
+  {
+    "relative_id": "11",
+    "relative_name": "Tito Boy",
+    "mobile_number": "639934567897"
+  },
+  {
+    "relative_id": "12",
+    "relative_name": "Tita Nene",
+    "mobile_number": "639945678908"
+  },
+  {
+    "relative_id": "13",
+    "relative_name": "Lolo Ben",
+    "mobile_number": "639956789019"
+  },
+  {
+    "relative_id": "14",
+    "relative_name": "Lola Rosa",
+    "mobile_number": "639967890120"
+  },
+  {
+    "relative_id": "15",
+    "relative_name": "Kuya Mark",
+    "mobile_number": "639978901231"
+  },
+  {
+    "relative_id": "16",
+    "relative_name": "Ate Claire",
+    "mobile_number": "639989012342"
+  },
+  {
+    "relative_id": "17",
+    "relative_name": "Nephew Rico",
+    "mobile_number": "639990123453"
+  },
+  {
+    "relative_id": "18",
+    "relative_name": "Niece Bea",
+    "mobile_number": "639901234564"
+  },
+  {
+    "relative_id": "19",
+    "relative_name": "Friend Nico",
+    "mobile_number": "639912345675"
+  },
+  {
+    "relative_id": "20",
+    "relative_name": "Friend Maya",
+    "mobile_number": "639923456786"
+  }
+]
