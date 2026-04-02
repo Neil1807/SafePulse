@@ -72,8 +72,23 @@ async def fetch_earthquakes(starttime):
 async def check_earthquakes(db_client):
     pass
    
-def haversine(user_lat, user_long, earthquake_center_lat, earthquake_center_long):
-    pass
+def get_alert_radius(magnitude: float) -> float:
+    if magnitude >= 7.0:
+        return 500
+    elif magnitude >= 6.0:
+        return 300
+    elif magnitude >= 5.0:
+        return 150
+    else:
+        return 75
+    
+#finds the distance of the user to the epicenter using haversine
+def get_distance_km(user_lat, user_long, earthquake_center_lat, earthquake_center_long):
+    earthquake_center = (earthquake_center_lat, earthquake_center_long)  # earthquake epicenter
+    user_location = (user_lat, user_long)  # user location
+    distance_km = haversine(earthquake_center, user_location, unit=Unit.KILOMETERS)
+    
+    return distance_km
 
 
 
