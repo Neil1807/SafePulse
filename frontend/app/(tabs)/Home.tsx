@@ -1,11 +1,15 @@
 import { useState } from "react";
-import {View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image, ScrollView} from 'react-native';
 import { User, Bell } from 'lucide-react-native';
 import EarthquakeCard from "@/components/earthquake-card";
+import ContactAvatar from "@/components/contact-avatar";
+
 
 
 export default function Home ()
 {
+
+
   return (
     <View className="flex-1"> 
             <View className="flex-[6] bg-[#3723A9] justify-center items-center">
@@ -28,7 +32,10 @@ export default function Home ()
                     <Text className="text-2xl font-bold p-2">Contacts</Text>
                   </View>
 
+                  <ContactAvatar/>
+                  
                 </View>
+
 
                 <View className="flex-[9]">
                   <View className="flex-row gap-2 items-center" >
