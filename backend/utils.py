@@ -4,8 +4,11 @@ import os
 from dotenv import load_dotenv
 from supabase import AsyncClient
 from database import insert_session, get_user
+from haversine import haversine, Unit
+
 
 load_dotenv()
+PHILSMS_API_TOKEN = os.getenv("PHIL_SMS_API")
 
 def generate_otp(length: int = 6):
     return str(secrets.randbelow(10**length)).zfill(length)
@@ -33,13 +36,44 @@ async def send_otp_sms(mobile_number: str, otp: str):
     except Exception:
         raise
 
-async def number_in_db(mobile_number: str, db_client: AsyncClient):
-    res = await db_client.table("users").select().eq("mobile_number", mobile_number).execute()
-    return res.data
-
+#DOUBLE CHECK
+async def send_alert_sms(mobile_numbers: list):
+    try:
+        message = "Your relative in this place is in danger"
+        mobile_number_list = mobile_numbers.join(", ")
+        async with httpx.AsyncClient as client:
+                response = await client.post(
+                "https://dashboard.philsms.com/api/v3/sms/send",
+                headers={
+                    "Authorization": f"Bearer {PHILSMS_API_TOKEN}",
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                json={
+                    "recipient":mobile_number_list,
+                    "sender_id":"PhilSMS",
+                    "type":"plain",
+                    "message":message,
+            }
+            )
+        return response   
+    except Exception:
+        raise
+    
 async def create_session(mobile_number: str, db_client, length: int = 32):
     session_id = secrets.token_urlsafe(length)
     user_id = await get_user(mobile_number, db_client)
     await insert_session(user_id, session_id, db_client)
     return session_id
-    
+ 
+async def fetch_earthquakes(starttime):
+    pass
+
+async def check_earthquakes(db_client):
+    pass
+   
+def haversine(user_lat, user_long, earthquake_center_lat, earthquake_center_long):
+    pass
+
+
+
