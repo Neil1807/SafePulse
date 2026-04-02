@@ -3,6 +3,8 @@ class AuthOTPPayload(BaseModel):
     mobile_number: str
     purpose: str
     otp: str
+    first_name: str | None = None
+    last_name: str | None = None
     
     @field_validator("mobile_number")
     @classmethod
