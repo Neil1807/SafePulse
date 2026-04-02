@@ -19,6 +19,7 @@ const [loading, setLoading] = useState(false);
 const [error, setError] = useState('');
 const [result, setResult] = useState('');
 const [registered,setRegistered] = useState('');
+const [keyboardEnabled, setKeyboardEnabled] = useState(true);
 
 
 const handleRequestOTP = async () => {
@@ -51,13 +52,12 @@ const handleAuthOTP = async () => {
 
     return (
       
-        <KeyboardProvider>
+   <KeyboardProvider>
 
-          <KeyboardAvoidingView 
-          style={{ flex: 1 }} 
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          >
-
+     <KeyboardAvoidingView
+     style={{ flex: 1 }} 
+     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+     enabled={keyboardEnabled}>
          <View className="flex-1 "> 
             <View className="flex-[6] bg-[#3723A9]">
                 <Image 
@@ -66,21 +66,25 @@ const handleAuthOTP = async () => {
                   />
               </View>
 
-         <View className="rounded-[28px] flex-[4] bg-[#F5F5F5] p-10 -mt-16">
-            <Text className="text-2xl font-bold mb-6 ">Log in</Text>
-            <Text className="mb-3 font-semibold">Phone Number</Text>
 
-           <View className="flex-row items-center bg-[#D9D9D9] rounded-[8px] border border-[#737373] mb-3">
-           <Text className="p-4 text-black border-r border-[#737373]">+639</Text>
-           <TextInput
-           placeholder="XXXXXXXXX"
-           className="flex-1 p-4"
-           keyboardType="phone-pad"
-           maxLength={9}
-           value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          />
-          </View>
+            
+            <View className="flex-[4]" >
+              <View className="rounded-[28px]  bg-[#F5F5F5] p-10 -mt-16">
+                  <Text className="text-2xl font-bold mb-6 ">Log in</Text>
+                  <Text className="mb-3 font-semibold">Phone Number</Text>
+
+                <View className="flex-row items-center bg-[#D9D9D9] rounded-[8px] border border-[#737373] mb-3">
+                <Text className="p-4 text-black border-r border-[#737373]">+639</Text>
+                <TextInput
+                placeholder="XXXXXXXXX"
+                className="flex-1 p-4"
+                keyboardType="phone-pad"
+                maxLength={9}
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                />
+                </View>
+    
             
 
            
@@ -89,30 +93,34 @@ const handleAuthOTP = async () => {
          
 
     
-            <TouchableOpacity onPress={()=> setShowOtp(true)}
+            <TouchableOpacity onPress={()=> {setShowOtp(true);
+              setKeyboardEnabled(!keyboardEnabled);
+            }
+            }
             className="bg-[#FF6B2C] p-5 rounded-[25px] mb-4">
                 <Text className="text-center text-white">Send OTP</Text>
             </TouchableOpacity>
 
             <Otp
               visible={showotp} 
-              onClose={() => setShowOtp(false)}/>
+              onClose={() => {setShowOtp(false);
+                setKeyboardEnabled(!keyboardEnabled);
+              }
+              }/>
 
              <TouchableOpacity onPress={()=> router.replace('/signup')}
             className="bg-[#FFFFF] p-5 rounded-[25px] border border-[#737373]">
                 <Text className="text-center">Create Account</Text>
             </TouchableOpacity>
-
-
-
             </View>
-         
-         
-         </View>
-
-         </KeyboardAvoidingView>
-
-      </KeyboardProvider>
+        </View>
       
+         
+   </View>
+
+</KeyboardAvoidingView>
+</KeyboardProvider>
+
+         
     );
 }

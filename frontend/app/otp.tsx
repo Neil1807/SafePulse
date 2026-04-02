@@ -42,7 +42,7 @@ export default function Otp({ visible, onClose }) {
 
           <TouchableOpacity
             className="bg-[#FF6B2C] rounded-lg p-2 w-40 mt-2"
-            onPress={()=> router.replace('/(tabs)/Home')}>
+            onPress={()=> router.replace('/(tabs)/home')}>
             <Text className="text-white text-center">Enter</Text>
           </TouchableOpacity>
 

@@ -18,6 +18,7 @@ const [loading, setLoading] = useState(false);
 const [error, setError] = useState('');
 const [result, setResult] = useState('');
 const [registered,setRegistered] = useState('');
+const [keyboardEnabled, setKeyboardEnabled] = useState(true);
 
 const handleRequestOTP = async () => {
   try {
@@ -88,14 +89,18 @@ const handleAuthOTP = async () => {
          
 
     
-             <TouchableOpacity onPress={()=> setShowOtp(true)}
+             <TouchableOpacity onPress={()=> {setShowOtp(true);
+             setKeyboardEnabled(!keyboardEnabled);
+             }}
                 className="bg-[#FF6B2C] p-5 rounded-[25px] mb-4">
                 <Text className="text-center text-white">Send OTP</Text>
              </TouchableOpacity>
             
              <Otp
                 visible={showotp} 
-                onClose={() => setShowOtp(false)}/>
+                onClose={() => {setShowOtp(false);
+                  setKeyboardEnabled(!keyboardEnabled);
+                }}/>
 
              <TouchableOpacity onPress={()=> router.replace('/login')}
             className="bg-[#FFFFF] p-5 rounded-[25px] border border-[#737373]">
