@@ -13,7 +13,7 @@ export default function AddContacts ()
     const [phoneNumber, setPhoneNumber] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
-    const router = useRouter();
+
 
     
     const phoneverification = () => {
