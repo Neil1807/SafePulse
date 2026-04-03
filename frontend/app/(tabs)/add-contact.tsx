@@ -24,6 +24,7 @@ export default function AddContacts ()
 
   const handlePress = () => {
     console.log("Pressed!");
+    phoneverification();
     
    };
 
@@ -68,7 +69,7 @@ export default function AddContacts ()
 
            <Text className="mb-3 font-semibold">Phone Number</Text>
 
-           <View className="flex-row items-center bg-[#D9D9D9] rounded-[8px] border border-[#737373] mb-3">
+          <View className="flex-row items-center bg-[#D9D9D9] rounded-[8px] border border-[#737373] mb-3">
            <Text className="p-2 text-black border-r border-[#737373]">+639</Text>
            <TextInput
            placeholder="XXXXXXXXX"
@@ -77,17 +78,23 @@ export default function AddContacts ()
            maxLength={9}
            value={phoneNumber}
           onChangeText={setPhoneNumber}
+      
           />
           </View>
+            {error ? (
+                <Text className="text-red-500 text-sm mb-2">
+                {error}
+                </Text>
+                ) : null}
 
          </View>
          
          
-         </View>
+        </View>
 
-         </KeyboardAvoidingView>
+     </KeyboardAvoidingView>
 
-      </KeyboardProvider>
+   </KeyboardProvider>
       
     );
 }
