@@ -57,7 +57,16 @@ const handleAuthOTP = async () => {
   }
 };
 
+const registeredNumbers = [
+  "912345678",
+  "987654321"
+];
+
 const phoneverification = () => {
+  if (!registeredNumbers.includes(phoneNumber)) {
+    setError("Phone number not registered. Please sign up first.");
+    return;
+  }
   if (phoneNumber.length !== 9) {
     setError("Invalid phone number. Please enter a 9-digit number.");
     return;
@@ -79,7 +88,7 @@ const handleVerify = async () => {
     setError("");
     alert("✅ Login Succesful!");
 
-    router.replace('/(tabs)/home');
+    router.replace('/(tabs)/Home');
   }
 };//delete later
 
