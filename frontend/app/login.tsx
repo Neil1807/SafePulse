@@ -98,7 +98,7 @@ const handleVerify = async () => {
 };//delete later
 
     return (
-      
+
       
    <KeyboardProvider>
 
@@ -106,7 +106,7 @@ const handleVerify = async () => {
      style={{ flex: 1 }} 
      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
      enabled={keyboardEnabled}>
-         <View className="flex-1 "> 
+         <View className="flex-1 ">
             <View className="flex-[6] bg-[#3723A9]">
                 <Image 
                   source={require('../assets/images/background-image.jpg')}

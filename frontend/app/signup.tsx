@@ -47,7 +47,10 @@ const handleAuthOTP = async () => {
       body: JSON.stringify({
       mobile_number: '639' + phoneNumber,
       purpose: 'registration',
-      otp: otp }),
+      otp: otp,
+      first_name: firstName,
+      last_name: lastName,
+    }),
     });
     console.log(response.status);
     const data = await response.json();
@@ -60,7 +63,7 @@ const handleAuthOTP = async () => {
 };
 
 const inputverification = () => {
-  if (firstName.trim().length <= 2 || lastName.trim().length <= 2) {
+  if (firstName.trim().length < 2 || lastName.trim().length < 2) {
     setError2("Name must be at least 2 characters");
     return;
   }
