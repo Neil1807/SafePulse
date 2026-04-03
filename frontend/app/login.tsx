@@ -67,9 +67,9 @@ const phoneverification = async () => {
     setError("Invalid phone number. Please enter a 9-digit number.");
     return;
   }
-  console.log('hallo');
+
   const response = await handleRequestOTP();
-  console.log('ts will not run');
+
  
   if (response.detail === "Number not registered") {
   setError("Phone number not registered. Please sign up first.");
