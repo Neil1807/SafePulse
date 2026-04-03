@@ -33,7 +33,8 @@ const handleRequestOTP = async () => {
       purpose: 'login'}),
     });
     const data = await response.json();
-    setResult(JSON.stringify(data));
+    console.log(data);
+    console.log('This is request');
   } catch (error) {
     console.log(error);
   }
@@ -49,6 +50,9 @@ const handleAuthOTP = async () => {
       otp: otp }),
     });
     const data = await response.json();
+    console.log(data);
+    console.log("This is auth")
+    await AsyncStorage.setItem('token', data.session_id);
     return data;
   } catch (error) {
     console.log(error);
@@ -72,10 +76,11 @@ const handleVerify = async () => {
   if (response.detail === "Incorrect OTP") {
     setError("Invalid OTP. Please try again.");
   } else {
-    setError("");
-    alert("✅ Login Succesful!");
     setKeyboardEnabled(!keyboardEnabled);
     setShowOtp(false);
+    setError("");
+    alert("✅ Login Succesful!");
+
     router.replace('/(tabs)/home');
   }
 };//delete later

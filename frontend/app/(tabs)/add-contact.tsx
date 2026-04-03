@@ -2,7 +2,7 @@ import {Text, View, Platform, TextInput} from "react-native";
 import { router } from "expo-router";
 import { KeyboardAvoidingView, KeyboardProvider } from "react-native-keyboard-controller";
 import { useState } from "react";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function AddContacts ()
 {
     const [phoneNumber, setPhoneNumber] = useState('');

@@ -31,7 +31,8 @@ const handleRequestOTP = async () => {
       purpose: 'registration'}),
     });
     const data = await response.json();
-    setResult(JSON.stringify(data));
+    console.log(data);
+    console.log("This is request");
   } catch (error) {
     console.log(error);
   }
@@ -50,6 +51,7 @@ const handleAuthOTP = async () => {
     console.log(response.status);
     const data = await response.json();
     console.log(data);
+    console.log("This is auth");
     return(data);
   } catch (error) {
     console.log(error);
