@@ -10,6 +10,7 @@ from database import get_users_with_coordinates, get_relatives, log_alert
 
 alerted_ids = set()
 last_poll_time = None
+current_time = datetime.now(timezone.utc) 
 load_dotenv()
 PHILSMS_API_TOKEN = os.getenv("PHIL_SMS_API")
 
@@ -83,21 +84,33 @@ async def fetch_earthquakes(starttime:datetime):
     return res.json().get("features", [])
 
 async def check_earthquakes(db_client):
+    global current_time
+    start_time = current_time - timedelta(minutes=2)
+    raw_earthquakes = await fetch_earthquakes(start_time)
+    earthquakes = []
+    for earthquake in raw_earthquakes:
+        earthquakes.append({
+            "earthquake_id": earthquake["id"],
+            "magnitude": earthquake["properties"]["mag"],
+            "latitude": earthquake["geometry"]["coordinates"][1],
+            "longitude": earthquake["geometry"]["coordinates"][0],
+            "place": earthquake["properties"]["place"]
+        })
+    await process_earthquakes(earthquakes, db_client)
+
+async def process_earthquakes(earthquakes, db_client):
     try:
-        global alerted_ids, last_poll_time
-        current_time = datetime.now(timezone.utc) 
-        start_time = current_time - timedelta(minutes=2)
-        earthquakes = await fetch_earthquakes(start_time)
+        global alerted_ids, last_poll_time, current_time
         users = await get_users_with_coordinates(db_client)
         for earthquake in earthquakes:
-            earthquake_id = earthquake["id"]
+            earthquake_id = earthquake["earthquake_id"]
             if earthquake_id in alerted_ids:
                 continue
             alerted_ids.add(earthquake_id)
-            magnitude = earthquake["properties"]["mag"]
-            earthquake_lat = earthquake["geometry"]["coordinates"][1]
-            earthquake_long = earthquake["geometry"]["coordinates"][0]
-            place = earthquake["properties"]["place"]
+            magnitude = earthquake["magnitude"]
+            earthquake_lat = earthquake["latitude"]
+            earthquake_long = earthquake["longitude"]
+            place = earthquake["place"]
             alert_radius = get_alert_radius(magnitude)
             for user in users:
                 user_lat = user["latitude"]
@@ -118,8 +131,7 @@ async def check_earthquakes(db_client):
                         await log_alert(user_id, earthquake_id, magnitude, place, relative_name, db_client)
         last_poll_time = current_time
     except Exception as e:
-        print(e)
-                    
+        print(e)             
    
 def get_alert_radius(magnitude: float) -> float:
     if magnitude >= 7.0:

@@ -10,7 +10,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from uuid import UUID
 
 #other file imports for separation of concerns
-from utils import send_otp_sms, generate_otp, create_session, check_earthquakes
+from utils import send_otp_sms, generate_otp, create_session, check_earthquakes, process_earthquakes
 from database import DuplicateMobileError, SessionNotFoundError, DatabaseError,RelativeNotFoundError\
 ,RelativeAlreadyAdded,NumberNotInDatabase,clean_up_expired_otp, delete_existing_otp\
 ,add_user_to_database,insert_otp_entry,get_session, logout_user, get_user, update_coordinates\
@@ -18,7 +18,7 @@ from database import DuplicateMobileError, SessionNotFoundError, DatabaseError,R
 ,update_name, get_logs
 from auth import checkOTP, OTPNotFoundError, ExpiredOTPError
 from payloadmodels import AuthOTPPayload, RequestOTPPayload, LocationPayload, RelativesPayload\
-,UpdateNamePayload
+,UpdateNamePayload, EarthquakePayload
 
 scheduler = AsyncIOScheduler()
 load_dotenv()
@@ -155,6 +155,16 @@ async def add_relatives(payload: RelativesPayload, db_client = Depends(get_db_cl
         raise HTTPException(409, detail = str(e))
     except Exception:
         raise HTTPException(500, detail = "Internal Server Error")
+    
+@app.post("/api/v1/simulate_earthquakes")
+async def simulate_earthquakes(payload: EarthquakePayload, db_client = Depends(get_db_client)):
+    earthquake = [{
+        "earthquake_id": payload.earthquake_id,
+        "magnitude": payload.magnitude,
+        "latitude": payload.latitude,
+        "longitude": payload.longitude,
+        "place": payload.place}]
+    await process_earthquakes(earthquake, db_client)
     
 #UPDATE============================================================================
 @app.put("/api/v1/relatives/{relative_id}")
