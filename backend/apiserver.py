@@ -121,7 +121,7 @@ async def get_relatives_of_user(db_client = Depends(get_db_client), user_id = De
     return res
 
 @app.get("/api/v1/users")
-async def get_user(db_client = Depends(get_db_client), user_id = Depends(get_current_usersession)):
+async def get_user_profile(db_client = Depends(get_db_client), user_id = Depends(get_current_usersession)):
     try:
         res = await get_user_with_session(db_client, user_id)
     except HTTPException:
