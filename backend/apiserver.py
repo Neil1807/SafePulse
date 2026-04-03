@@ -15,7 +15,7 @@ from database import DuplicateMobileError, SessionNotFoundError, DatabaseError,R
 ,RelativeAlreadyAdded,NumberNotInDatabase,  LogNotFoundError,clean_up_expired_otp, delete_existing_otp\
 ,add_user_to_database,insert_otp_entry,get_session, logout_user, get_user, update_coordinates\
 ,add_relative, update_relatives, delete_relatives, number_in_db\
-,update_name, get_logs, delete_logs
+,update_name, get_logs, delete_logs, get_user_relatives
 from auth import checkOTP, OTPNotFoundError, ExpiredOTPError
 from payloadmodels import AuthOTPPayload, RequestOTPPayload, LocationPayload, RelativesPayload\
 ,UpdateNamePayload, EarthquakePayload
@@ -103,6 +103,11 @@ def root():
 @app.get("/api/v1/logs")
 async def get_user_logs(db_client = Depends(get_db_client), user_id = Depends(get_current_usersession)):
     res = await get_logs(user_id, db_client)
+    return res
+
+@app.get("/api/v1/relatives")
+async def get_user_relative(db_client = Depends(get_db_client), user_id = Depends(get_current_usersession)):
+    res = await get_user_relatives(user_id, db_client)
     return res
 
 @app.post("/api/v1/otp/requests")
