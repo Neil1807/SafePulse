@@ -137,9 +137,10 @@ async def process_earthquakes(earthquakes, db_client):
                         message = f"Your relative {user_fullname} has been affected by a {magnitude} magnitude earthquake in {place}"
                         await send_alert_sms(relative_number, message)
                         await log_alert(user_id, earthquake_id, magnitude, place, relative_name, db_client)
+                        
     except Exception as e:
         print(e)             
-   
+
 def get_alert_radius(magnitude: float) -> float:
     if magnitude >= 7.0:
         return 500
