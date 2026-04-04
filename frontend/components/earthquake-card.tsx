@@ -1,8 +1,13 @@
 import { View, Text, ImageBackground } from 'react-native';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useFocusEffect } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 export default function EarthquakeCard() {
   const [earthquake, setEarthquake] = useState(null);
+
 
   return (
     <ImageBackground 

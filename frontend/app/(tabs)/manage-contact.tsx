@@ -70,14 +70,13 @@ export default function IntroScreen()
           },
         });
 
-     const data = await response.json();
      if (!response.ok) {
-      console.log('Delete failed:', data);
+      console.log('Delete failed:');
       return;
      }
      //setContacts(prev => prev.filter(contact => contact.relative_id !== relative_id));
 
-     console.log('Delete succesfully', data);
+     console.log('Delete succesfully');
 
     } catch (error)
     {

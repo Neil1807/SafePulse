@@ -7,12 +7,12 @@ import * as SystemUI from 'expo-system-ui';
 import { ImageBackground } from 'react-native'; 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+
 SystemUI.setBackgroundColorAsync('#3723A9');
 
 
 
 export default function RootLayout() {
-  
   
 
   return (
