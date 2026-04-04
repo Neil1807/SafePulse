@@ -5,7 +5,7 @@ import EarthquakeCard from "@/components/earthquake-card";
 import ContactAvatar from "@/components/contact-avatar";
 import LogsList from "@/components/log-item";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { updateLocation } from '@/tasks/location-task';
+import { updateLocation, startBackgroundLocation  } from '@/tasks/location-task';
 
 
 
@@ -15,6 +15,9 @@ export default function Home ()
 
     useEffect(() => {
     updateLocation();
+    startBackgroundLocation();
+    const interval = setInterval(updateLocation, 10000);
+    return () => clearInterval(interval);
   }, []);
 
 

@@ -59,7 +59,7 @@ export default function Menu ()
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             latitude: 10.3157,
-            longitude: 123.8854,
+            longitude: 123.8855,
             earthquake_id: 'test_eq_001',
             magnitude: 6.7,
             place: 'Cebu City, Philippines',
