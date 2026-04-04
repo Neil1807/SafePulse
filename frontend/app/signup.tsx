@@ -18,6 +18,8 @@ const [showotp, setShowOtp] = useState(false);
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState('');
 const [error2, setError2] = useState('');
+const [result, setResult] = useState('');
+const [registered,setRegistered] = useState('');
 const [keyboardEnabled, setKeyboardEnabled] = useState(true);
 const [firstName, setFirstName] = useState("");
 const [lastName, setLastName] = useState("");
@@ -28,13 +30,12 @@ const handleRequestOTP = async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-      mobile_number: '63' + phoneNumber, 
+      mobile_number: '639' + phoneNumber, 
       purpose: 'registration'}),
     });
     const data = await response.json();
     console.log(data);
     console.log("This is request");
-    return data;
   } catch (error) {
     console.log(error);
   }
@@ -46,12 +47,9 @@ const handleAuthOTP = async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-      mobile_number: '63' + phoneNumber,
+      mobile_number: '639' + phoneNumber,
       purpose: 'registration',
-      otp: otp,
-      first_name: firstName,
-      last_name: lastName,
-    }),
+      otp: otp }),
     });
     console.log(response.status);
     const data = await response.json();
@@ -63,29 +61,17 @@ const handleAuthOTP = async () => {
   }
 };
 
-const inputverification = async () => {
-  if (firstName.trim().length < 2 || lastName.trim().length < 2) {
+const inputverification = () => {
+  if (firstName.trim().length <= 2 || lastName.trim().length <= 2) {
     setError2("Name must be at least 2 characters");
     return;
   }
-  if (phoneNumber.length !== 10) {
-    setError("Invalid phone number. Please enter a 10-digit number.");
+  if (phoneNumber.length !== 9) {
+    setError("Invalid phone number. Please enter a 9-digit number.");
     return;
   }
-
-  if (!phoneNumber.startsWith('9')) {
-    setError("Phone number must start with 9.");
-    return;
-  }
-
-  const response = await handleRequestOTP();
-
-   if (response.detail === "You cannot register as the number has been registered") {
-    setError("This number is already registered. Please use another.");
-    return;
-    }
-
     setError2("");
+    handleRequestOTP();
     setError("");
     setShowOtp(true);
     setKeyboardEnabled(!keyboardEnabled);
@@ -117,10 +103,14 @@ const handleVerify = async () => {
           >
 
          <View className="flex-1 "> 
-            <View className="flex-[6] bg-[#3723A9]">
+            <View className="flex-[6] bg-[#3723A9] items-center justify-center">
               <Image 
               source={require('../assets/images/background-image.jpg')}
               className="absolute w-full h-full opacity-20"
+              />
+              <Image 
+              source={require('../assets/images/logo.png')}
+              className="absolute w-50 h-50"
               />
             </View>
 
@@ -167,12 +157,12 @@ const handleVerify = async () => {
             
 
           <View className="flex-row items-center bg-[#D9D9D9] rounded-[8px] border border-[#737373] mb-3">
-           <Text className="p-4 text-black border-r border-[#737373]">+63</Text>
+           <Text className="p-4 text-black border-r border-[#737373]">+639</Text>
            <TextInput
            placeholder="XXXXXXXXX"
            className="flex-1 p-4"
            keyboardType="phone-pad"
-           maxLength={10}
+           maxLength={9}
            value={phoneNumber}
            onChangeText={(text) => {
             setPhoneNumber(text);
@@ -215,7 +205,7 @@ const handleVerify = async () => {
                 <Text className="text-center">Already have an account?</Text>
             </TouchableOpacity>
 
-              <TouchableOpacity onPress={()=> router.replace('/(tabs)/home')}
+              <TouchableOpacity onPress={()=> router.replace('/(tabs)/Home')}
             className="bg-[#FFFFF] p-5 rounded-[25px] border border-[#737373]">
                 <Text className="text-center">Go to tabs</Text>
             </TouchableOpacity>
