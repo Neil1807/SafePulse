@@ -6,7 +6,7 @@ from database import insert_session, get_user, get_users_with_coordinates, log_a
 from haversine import haversine, Unit
 from datetime import datetime, timezone, timedelta
 
-alerted_ids = set()
+alerted_ids = {}
 last_poll_time = None
 current_time = datetime.now(timezone.utc) 
 load_dotenv()
@@ -91,19 +91,24 @@ async def check_earthquakes(db_client):
 
 async def process_earthquakes(earthquakes, db_client):
     try:
-        global alerted_ids
-            
         for earthquake in earthquakes:
+            global alerted_ids
             earthquake_id = earthquake["earthquake_id"]
             if earthquake_id in alerted_ids:
-                continue
-            alerted_ids.add(earthquake_id)
+                if alerted_ids[earthquake_id] < datetime.now() - timedelta(minutes=2):
+                    del alerted_ids[earthquake_id]
+                else:
+                    continue
+            alerted_ids[earthquake_id] = datetime.now()
             users = await get_users_with_coordinates(db_client)
             all_relatives = await get_all_relatives(db_client) #get all relatives
-            relatives_map = {} 
+            
+            user_relatives = {} 
+            affected_relatives = {}
+        
             for relative in all_relatives: #map all relatives to each user_id
                 user_id = relative["user_id"]
-                relatives_map.setdefault(user_id, []).append(relative)
+                user_relatives.setdefault(user_id, []).append(relative)
             
             magnitude = earthquake["magnitude"]
             earthquake_lat = earthquake["latitude"]
@@ -119,14 +124,17 @@ async def process_earthquakes(earthquakes, db_client):
                 if earthquake_distance <= alert_radius:
                     user_id = user["user_id"]
                     user_fullname = f"{user['first_name']} {user['last_name']}"
-                    relatives = relatives_map.get(user_id, [])
+                    relatives = user_relatives.get(user_id, [])
                     
                     for relative in relatives:
                         relative_number = relative["mobile_number"]
                         relative_name = relative["relative_name"]
-                        message = f"Your relative {user_fullname} has been affected by a {magnitude} magnitude earthquake in {place}"
-                        #await send_alert_sms(relative_number, message)
+                        affected_relatives.setdefault(relative_number, []).append(user_fullname)
                         await log_alert(user_id, earthquake_id, magnitude, place, relative_name, db_client)
+                        
+            for relative in affected_relatives:
+                message = f"Your relative {(", ").join(affected_relatives[relative])} has been affected by a {magnitude} magnitude earthquake in {place}"
+                await send_alert_sms(relative, message)
                         
     except Exception as e:
         print(e)             
