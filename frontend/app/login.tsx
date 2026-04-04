@@ -116,10 +116,14 @@ const handleVerify = async () => {
      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
      enabled={keyboardEnabled}>
          <View className="flex-1 ">
-            <View className="flex-[6] bg-[#3723A9]">
+            <View className="flex-[6] bg-[#3723A9] items-center justify-center">
                 <Image 
                   source={require('../assets/images/background-image.jpg')}
                   className="absolute w-full h-full opacity-20"
+                  />
+                  <Image 
+                  source={require('../assets/images/logo.png')}
+                  className="absolute w-50 h-50"
                   />
               </View>
 

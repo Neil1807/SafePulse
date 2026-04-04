@@ -144,6 +144,14 @@ async def get_user_with_session(db_client, user_id):
     res = await db_client.table("users").select("mobile_number, first_name, last_name").eq("user_id", user_id).execute()
     return res.data[0]
 
+@catch_database_error
+async def get_recent_earthquakes(db_client, user_id):
+    res = await db_client.table("alert_logs").select("earthquake_id, magnitude, place, sent_at").eq("user_id", user_id)\
+        .order("sent_at", desc = True).limit(1).execute()
+    if not res.data:
+        raise LogNotFoundError("No recent earthquake logs found")
+    return res.data[0]
+
 #UPDATE ============================================================================  
 @catch_database_error
 async def update_coordinates(latitude: float, longitude: float, user_id: str, db_client):

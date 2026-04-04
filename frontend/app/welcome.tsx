@@ -11,7 +11,14 @@ export default function IntroScreen()
       className="absolute w-full h-full opacity-10"
       resizeMode="cover"
       />
-    <View className="flex-[6] justify-end items-center">
+
+       <View className="flex-[6] justify-end items-center">
+     <Image 
+                source={require('../assets/images/logo.png')}
+                  className="absolute w-50 h-50"
+                  />
+    </View>
+    <View className="flex-[3] justify-end items-center">
       <Text className="text-3xl font-bold text-white">Message Who Matters</Text>
       <Text className="text-white text-sm mt-2">Flawless SMS delivery for maximum assistance</Text>
     </View>
