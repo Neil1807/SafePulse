@@ -1,15 +1,26 @@
 import { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { View, Image, ActivityIndicator } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoadingScreen() {
   const router = useRouter();
 
-  useEffect(() => {
+useEffect(() => {
+  const checkLogin = async () => {
+    const token = await AsyncStorage.getItem('token');
+
     setTimeout(() => {
-      router.replace("/welcome"); 
+      if (token) {
+        router.replace('/(tabs)/home');
+      } else {
+        router.replace('/welcome');
+      }
     }, 2000);
-  }, []);
+  };
+
+  checkLogin();
+}, []);
 
   return (
    <View className="flex-1 justify-center items-center bg-[#3723A9]">
