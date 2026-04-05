@@ -131,7 +131,7 @@ async def process_earthquakes(earthquakes, db_client):
                         
             for relative in affected_relatives:
                 message = f"Your relative {(", ").join(affected_relatives[relative])} has been affected by a {magnitude} magnitude earthquake in {place}"
-                #await send_alert_sms(relative, message)   
+                await send_alert_sms(relative, message)   
         except Exception as e:
             print(e)
 

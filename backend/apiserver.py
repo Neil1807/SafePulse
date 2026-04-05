@@ -153,9 +153,9 @@ async def request_OTP(payload: RequestOTPPayload, db_client = Depends(get_db_cli
         if payload.purpose == "registration" and await number_in_db(payload.mobile_number, db_client):
             raise HTTPException(status_code= 409, detail="You cannot register as the number has been registered")
         otp = generate_otp() # make a fresh OTP for this request
-        #await send_otp_sms(payload.mobile_number, otp)
+        await send_otp_sms(payload.mobile_number, otp)
         await delete_existing_otp(payload.mobile_number, db_client)
-        otp_code = await insert_otp_entry(payload.mobile_number, otp, payload.purpose, db_client)
+        await insert_otp_entry(payload.mobile_number, otp, payload.purpose, db_client)
     except NumberNotInDatabase as e:
         raise HTTPException(status_code=404, detail=str(e))
     except HTTPException:
