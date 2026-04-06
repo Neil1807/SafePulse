@@ -220,7 +220,7 @@ async def update_relative(payload: RelativesPayload,relative_id:UUID, db_client 
     except DatabaseError:
         raise HTTPException(500, detail= "Database operation failed")
     
-@app.patch("/api/v1/location")
+@app.put("/api/v1/location")
 async def update_location(payload: LocationPayload, db_client = Depends(get_db_client), user_id = Depends(get_current_usersession)):
     await update_coordinates(payload.latitude, payload.longitude, user_id, db_client)
     return {"message":f"Users location has been updated"}
