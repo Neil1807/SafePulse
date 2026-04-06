@@ -14,7 +14,7 @@ def generate_otp(length: int = 6):
     return str(secrets.randbelow(10**length)).zfill(length)
 
 async def send_otp_sms(mobile_number: str, otp: str):
-    message = f"Your SafePulse verification code is: {otp}. It expires in 5 minutes. Do not share this with anyone."
+    message = f"Your Beakonek verification code is: {otp}. It expires in 5 minutes. Do not share this with anyone."
     PHILSMS_API_TOKEN = os.getenv("PHIL_SMS_API")
     try:
         async with httpx.AsyncClient() as client:
