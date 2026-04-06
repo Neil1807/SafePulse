@@ -1,21 +1,20 @@
-# SafePulse
+# Beakonek
 
-SafePulse is a mobile safety app concept that helps people stay connected during emergencies, especially earthquakes.
+Beakonek is a mobile safety app concept that helps people stay connected during emergencies, especially earthquakes.
 
 It is designed to make two things easier:
 
-- Keep your account secure with one-time passcodes (OTP).
+- Keeping your account secure with one-time passcodes (OTP).
 - Help loved ones stay informed through location sharing features.
 
-## What Problem SafePulse Solves
+## What Problem Beakonek Solves
 
 During stressful events, people often struggle to:
 
 - Quickly check if family members are safe.
-- Keep account access secure without complicated steps.
-- Share location updates in a reliable way.
+- Share location and well-being updates in a reliable way.
 
-SafePulse aims to solve this with a simple mobile experience focused on trust, speed, and safety.
+Beakonek aims to solve this with a simple mobile experience focused on trust, speed, and safety.
 
 ## Who This Is For
 
@@ -26,31 +25,21 @@ SafePulse aims to solve this with a simple mobile experience focused on trust, s
 ## What the App Can Do Today
 
 - Sign up and log in using OTP verification.
-- Validate OTPs with expiration checks.
 - Store and manage emergency contacts/relatives.
 - Update user location data.
-- Log out and manage active sessions.
 
-## How It Works (Simple View)
+## How It Works 
 
-1. A user enters their mobile number.
-2. SafePulse sends a one-time code.
-3. The user enters the code to verify identity.
-4. Once verified, the app allows access to key features like contact management and location updates.
+1. A user signs up using their mobile number, and is asked to enter an OTP to verify their number.
+2. Once verified, the app allows access to key features like contact management and location updates.
+3. When an earthquake happens in your area, Beakonek sends an SMS to your contacts and informs them about the disaster. 
+
 
 ## Privacy and Safety Notes
 
 - This project is currently in development/demo mode.
-- OTP behavior in local testing may be simplified for faster development.
-- For production use, OTP delivery should be routed only through trusted channels (SMS/email provider) and never exposed in API responses.
+- OTP only works for GLOBE users.
 
-## Project Overview (For Non-Developers)
-
-- Mobile app: what users interact with on their phone.
-- Server: handles verification, sessions, and data operations.
-- Database service: securely stores user and app data.
-
-## For Developers
 
 ### Tech Stack
 
