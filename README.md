@@ -1,11 +1,11 @@
 # Beakonek
 
-Beakonek is a mobile safety app concept that helps people stay connected during emergencies, especially earthquakes.
+Beakonek is a mobile safety app concept that helps people stay connected during earthquakes.
 
 It is designed to make two things easier:
 
-- Keeping your account secure with one-time passcodes (OTP).
-- Help loved ones stay informed through location sharing features.
+- Keep track of your location with GPS.
+- Help loved ones stay informed through an automated SMS feature.
 
 ## What Problem Beakonek Solves
 
